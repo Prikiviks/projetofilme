@@ -97,3 +97,7 @@ class RecomendacaoForm(forms.ModelForm):
         widgets = {
             'data_recomendacao': forms.DateInput(attrs={'type': 'datetime-local'}),
         }
+class MeioPagementoForm(forms.Form):
+    class Meta:
+        models = MeioPagamento
+        fields = ['nome']

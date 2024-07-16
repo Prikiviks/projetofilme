@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from app.models import *
 from app.forms import UsuarioForm, FilmeForm, SerieForm, AvaliacaoForm, CategoriaForm, RelatorioForm
@@ -140,6 +140,52 @@ class SerieDeleteView(View):
         serie = Serie.objects.get(pk=pk)
         serie.delete()
         return redirect('serie_list')
+    
+    
+    
+    
+    
+#MEIO DE PAGAMENTO 
+
+class MeioPagamentoListView(View):
+    def get(self, request):
+        meios_pagamento = MeioPagamento.objects.all()
+        return render(request, 'meiopagamento_list.html', {'meios_pagamento': meios_pagamento})
+
+class MeioPagamentoCreateView(View):
+    def get(self, request):
+        form = MeioPagamentoForm()
+        return render(request, 'meiopagamento_form.html', {'form': form})
+
+    def post(self, request):
+        form = MeioPagamentoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('meiopagamento_list')
+        return render(request, 'meiopagamento_form.html', {'form': form})
+
+class MeioPagamentoUpdateView(View):
+    def get(self, request, pk):
+        meio_pagamento = get_object_or_404(MeioPagamento, pk=pk)
+        form = MeioPagamentoForm(instance=meio_pagamento)
+        return render(request, 'meiopagamento_form.html', {'form': form})
+
+    def post(self, request, pk):
+        meio_pagamento = get_object_or_404(MeioPagamento, pk=pk)
+        form = MeioPagamentoForm(request.POST, instance=meio_pagamento)
+        if form.is_valid():
+            form.save()
+            return redirect('meiopagamento_list')
+        return render(request, 'meiopagamento_form.html', {'form': form})
+
+class MeioPagamentoDeleteView(View):
+    def post(self, request, pk):
+        meio_pagamento = get_object_or_404(MeioPagamento, pk=pk)
+        meio_pagamento.delete()
+        return redirect('meiopagamento_list')
+
+
+
 
 # VIEWS AVALIACAO
 class AvaliacaoListView(View):

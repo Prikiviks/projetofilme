@@ -15,12 +15,10 @@ class Usuario(models.Model):
     plano_assinatura = models.ForeignKey('Plano', on_delete=models.SET_NULL, null=True)
     
     class Meta:
-        verbose_name = 'Usuarios'
+        verbose_name = 'Usuários'
     
     def __str__(self):
         return self.nome
-
-
 
 class Plano(models.Model):
     nome = models.CharField(max_length=100)
@@ -33,24 +31,31 @@ class Plano(models.Model):
     
     def __str__(self):
         return self.nome
-    
-    
 
 class Pagamento(models.Model):
-    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     data_pagamento = models.DateTimeField()
+    plano = models.ForeignKey(Plano, on_delete=models.CASCADE)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=50)  # pago, pendente, etc.
-    
-    class Meta:
-        verbose_name = 'Pagamentos'
-    
-    def __str__(self):
-        return f'Pagamento de {self.usuario.nome} em {self.data_pagamento}'
-    
-    
-    
+    meio_pagamento = models.ForeignKey('MeioPagamento', on_delete=models.CASCADE)  # Corrigido nome do campo
+    status = models.CharField(max_length=50)  # Adicionado campo status para representar pago, pendente, etc.
 
+    class Meta:
+        verbose_name = 'Pagamento'
+        verbose_name_plural = 'Pagamentos'
+
+    def __str__(self):
+        return f'Pagamento de {self.usuario.nome} em {self.data_pagamento}. Valor: R$ {self.valor}'
+
+class MeioPagamento(models.Model):  # Corrigido nome da classe para seguir convenção de nomenclatura
+    nome = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        verbose_name = 'Meio de Pagamento'
+        verbose_name_plural = 'Meios de Pagamento'
+
+    def __str__(self):
+        return self.nome
 
 class Filme(models.Model):
     titulo = models.CharField(max_length=200)
