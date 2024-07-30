@@ -1,6 +1,8 @@
 from django import forms
 from .models import *
 
+
+
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
@@ -97,7 +99,5 @@ class RecomendacaoForm(forms.ModelForm):
         widgets = {
             'data_recomendacao': forms.DateInput(attrs={'type': 'datetime-local'}),
         }
-class MeioPagementoForm(forms.Form):
-    class Meta:
-        models = MeioPagamento
-        fields = ['nome']
+        
+

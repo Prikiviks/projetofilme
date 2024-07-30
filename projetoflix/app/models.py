@@ -32,30 +32,31 @@ class Plano(models.Model):
     def __str__(self):
         return self.nome
 
+from django.db import models
+from django.utils import timezone
+
 class Pagamento(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    data_pagamento = models.DateTimeField()
-    plano = models.ForeignKey(Plano, on_delete=models.CASCADE)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    meio_pagamento = models.ForeignKey('MeioPagamento', on_delete=models.CASCADE)  # Corrigido nome do campo
-    status = models.CharField(max_length=50)  # Adicionado campo status para representar pago, pendente, etc.
+    VALOR_CHOICES = [
+        ('9.90', 'R$ 9,90'),
+        ('19.90', 'R$ 19,90'),
+        ('47.75', 'R$ 47,75'),
+    ]
+    meio_pagamento = models.CharField(max_length=255)
+    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
+    data_pagamento = models.DateTimeField(default=timezone.now)
+    plano = models.ForeignKey('Plano', on_delete=models.CASCADE)
+    valor = models.CharField(max_length=10, choices=VALOR_CHOICES)
+    status = models.CharField(max_length=20, choices=(('pago', 'Pago'), ('pendente', 'Pendente')))
 
     class Meta:
         verbose_name = 'Pagamento'
         verbose_name_plural = 'Pagamentos'
+        ordering = ['-data_pagamento']  # Opcional: Ordena por data de pagamento em ordem decrescente
 
     def __str__(self):
-        return f'Pagamento de {self.usuario.nome} em {self.data_pagamento}. Valor: R$ {self.valor}'
+        return f'Pagamento de {self.usuario.nome} em {self.data_pagamento}. Valor: {self.get_valor_display()}'
 
-class MeioPagamento(models.Model):  # Corrigido nome da classe para seguir convenção de nomenclatura
-    nome = models.CharField(max_length=50, blank=True)
 
-    class Meta:
-        verbose_name = 'Meio de Pagamento'
-        verbose_name_plural = 'Meios de Pagamento'
-
-    def __str__(self):
-        return self.nome
 
 class Filme(models.Model):
     titulo = models.CharField(max_length=200)
