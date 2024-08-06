@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from django.urls import path, include
 from app.views import (
     IndexView,
     UsuarioListView,
@@ -26,12 +27,18 @@ from app.views import (
     RelatorioCreateView,
     RelatorioUpdateView,
     RelatorioDeleteView,
+    AdminView,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
 
+    
+    # url amin site
+    path('admin/', AdminView.as_view(), name='admin_view'),
+    path('admin/', admin.site.urls),
+    path('admin_app/', include('admin_app.urls')),
     # URLs para Usuários
     path('usuarios/', UsuarioListView.as_view(), name='usuario_list'),
     path('usuarios/novo/', UsuarioCreateView.as_view(), name='usuario_create'),

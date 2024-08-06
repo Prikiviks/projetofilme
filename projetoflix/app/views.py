@@ -33,7 +33,12 @@ class IndexView(View):
         return render(request, 'index.html', {'error': 'Campo obrigatório.'})
         
  
-
+class AdminView(View):
+    def get(self, request):
+        return render(request, 'menu_admin.html')
+    def post(self, request):
+        True
+        
 # VIEWS USUARIO
 class UsuarioListView(View):
     def get(self, request):
