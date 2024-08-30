@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CodePen - Netflix Inspired Movie Gallery</title>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'>
   <style>
@@ -15,28 +16,35 @@
       font-family: "Montserrat", sans-serif;
       width: 100%;
     }
+
     .container {
       padding-bottom: 3rem;
     }
+
     img {
       -webkit-box-reflect: below 5px linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.4));
       -webkit-transition: all 0.5s ease;
       transition: all 0.5s ease;
     }
+
     .container img:hover {
       transform: scale(1.1);
     }
+
     .last {
       margin-top: 6.5rem;
     }
+
     .featured_wrapper {
       position: relative;
     }
+
     .featured_wrapper img {
       width: 100%;
       height: 350px;
       object-fit: cover;
     }
+
     .title_wrapper {
       position: absolute;
       width: 100%;
@@ -44,10 +52,14 @@
       bottom: 2rem;
       padding: 20px 40px;
       box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 2s;
     }
+
     .title_wrapper h1 {
       width: 70%;
     }
+
     button {
       background: #f40612 !important;
       color: #fff !important;
@@ -55,34 +67,178 @@
       padding: 0.5rem 3rem;
       outline: none;
       border: 0 !important;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
     }
-	.featured_wrapper img {
-		width: 100vw; /* Largura total da janela */
-		height: calc(100vh - 200px); /* Altura total da janela menos 50px */
-		object-fit: cover; /* Cobre todo o espaço sem distorção */
-		margin-top: 50px; /* Espaço na parte superior */
-	  }
-	.featured_wrapper {
-		position: relative;
-	}
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #d02b1e;
+    }
+
+    .featured_wrapper img {
+      width: 100vw; /* Largura total da janela */
+      height: calc(100vh - 200px); /* Altura total da janela menos 200px */
+      object-fit: cover; /* Cobre todo o espaço sem distorção */
+      margin-top: 50px; /* Espaço na parte superior */
+    }
+
     .video_wrapper {
       position: absolute;
       top: 70px; /* Ajuste conforme necessário */
       right: -350px; /* Ajuste conforme necessário */
       width: 1400px; /* Largura do vídeo */
       z-index: 10; /* Para ficar acima da imagem */
-	    border-radius: 20px
+      border-radius: 20px;
     }
+
     .video {
       width: 100%;
       height: auto;
-      
+    }
+
+    /* Estilos para a nova linha de links */
+    .link-bar {
+      background-color: #f40612;
+      color: #fff;
+      padding: 15px 30px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 20;
+      transition: top 0.3s;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .link-bar a {
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link-bar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Estilos para a galeria de filmes com rolagem horizontal */
+    .gallery-container {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 50px; /* Espaço para os botões */
+    }
+
+    .gallery {
+      display: flex;
+      overflow-x: scroll;
+      padding: 20px;
+      gap: 15px;
+      scroll-behavior: smooth;
+      flex-wrap: nowrap;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+    }
+
+    .gallery::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .gallery::-webkit-scrollbar-thumb {
+      background: #f40612;
+      border-radius: 10px;
+    }
+
+    .gallery::-webkit-scrollbar-track {
+      background: #333;
+    }
+
+    .gallery .column {
+      flex: 0 0 auto;
+      width: calc(100% / 5 - 15px); /* Ajustar o tamanho das colunas para telas maiores */
+      scroll-snap-align: center;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    /* Botões de navegação */
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-button.left {
+      left: 10px;
+    }
+
+    .nav-button.right {
+      right: 10px;
+    }
+
+    .nav-button:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Media queries para responsividade */
+    @media (max-width: 768px) {
+      .gallery .column {
+        width: calc(100% / 3 - 15px); /* Ajusta para 3 colunas em telas menores */
+      }
+
+      .featured_wrapper img {
+        height: 250px; /* Reduz a altura da imagem em telas menores */
+      }
+
+      .title_wrapper h1 {
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte para telas menores */
+      }
+
+      .nav-button {
+        display: none; /* Esconde os botões de navegação em telas menores */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery .column {
+        width: calc(100% / 2 - 15px); /* Ajusta para 2 colunas em telas muito pequenas */
+      }
+
+      .featured_wrapper img {
+        height: 200px; /* Reduz ainda mais a altura da imagem */
+      }
+
+      .title_wrapper h1 {
+        font-size: 1.25rem; /* Ajusta o tamanho da fonte ainda mais para telas muito pequenas */
+      }
     }
   </style>
 </head>
 <body>
 
 <div class="top">
+  <div class="link-bar">
+    <a href="/usuarios/">Usuários</a>
+    <a href="/series/">Séries</a>
+    <a href="/filmes/">Filmes</a>
+    <a href="/categorias/">Categorias</a>
+    <a href="/avaliacoes/">Avaliações</a>
+    <a href="/relatorios/">Relatórios</a>
+  </div>
   <div class="columns">
     <div class="column is-full featured_wrapper p-0">
       <img src="https://wallpapercave.com/wp/wp5522079.jpg" class="featured">
@@ -92,10 +248,7 @@
         <button class="button is-medium">ASSISTA JÁ</button>
       </div>
       <div class="video_wrapper">
-        <div class="video_wrapper">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/dmIFhpQe9Zk?si=tI6q31zOBZjQNd3R&amp;start=5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-		</div>
-		
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/dmIFhpQe9Zk?si=tI6q31zOBZjQNd3R&amp;start=5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -105,41 +258,159 @@
   <div class="columns is-multiline p-0 pt-6 last">
     <div class="column is-full">
       <p class="has-text-white">Filmes e Séries</p>
-      <a class="nav-link text-dark" href="/usuarios/">usuarios</a>
-      <a class="nav-link text-dark" href="/series/">series</a>
-      <a class="nav-link text-dark" href="/filmes/">filmes</a>
-      <a class="nav-link text-dark" href="/categorias/">categorias</a>
-      <a class="nav-link text-dark" href="/avaliacoes/">avaliações</a>
-      <a class="nav-link text-dark" href="/relatorios/">relatorios</a>
-      <a class="nav-link text-dark" href="{% url 'admin_view' %}">Administração</a>
     </div>
-    <div class="column is-one-quarter">
-      <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg">
+    <!-- Primeira Galeria de filmes -->
+    <div class="gallery-container">
+      <button class="nav-button left">&lt;</button>
+      <div class="gallery">
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 1">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 2">
+        </div>
+        <div class="column">
+          <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/a5mufmhrL0QBg0JNLPGNwbWENDg.jpg" alt="Filme 3">
+        </div>
+        <div class="column">
+          <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/28w2afrlxhvxnvscdfnmky3t1ji.jpg" alt="Filme 4">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 5">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 6">
+        </div>
+        <!-- Adicionando mais imagens -->
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 7">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 8">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 9">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 10">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 11">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 12">
+        </div>
+        <!-- Continue adicionando mais imagens conforme necessário -->
+      </div>
+      <button class="nav-button right">&gt;</button>
     </div>
-    <div class="column is-one-quarter">
-      <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg.">
-    </div>
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/a5mufmhrL0QBg0JNLPGNwbWENDg.jpg">
-    </div>
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/28w2afrlxhvxnvscdfnmky3t1ji.jpg">
-    </div>
-  </div>
-  <div class="columns last">
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/A7WtrzlvLAhdmXObY9aZCRhtAMs.jpg">
-    </div>
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/u8NwlaCFd3oNJxNjqvMwRj4LiBZ.jpg">
-    </div>
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-03/A7SBIS42Kmg4FmzDuNvQSPaI3kc.jpg">
-    </div>
-    <div class="column is-one-quarter">
-      <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2022-11/312608747.jpg">
+
+    <!-- Segunda Galeria de filmes -->
+    <div class="gallery-container">
+      <button class="nav-button left">&lt;</button>
+      <div class="gallery">
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 13">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 14">
+        </div>
+        <div class="column">
+          <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/a5mufmhrL0QBg0JNLPGNwbWENDg.jpg" alt="Filme 15">
+        </div>
+        <div class="column">
+          <img src="https://cdn32.ntcdn.pro/testme/dle2/posts/2024-07/28w2afrlxhvxnvscdfnmky3t1ji.jpg" alt="Filme 16">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 17">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 18">
+        </div>
+        <!-- Adicionando mais imagens -->
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/tqWF1vSDKXSiQaRaFkep3ofvyzQ.jpg" alt="Filme 19">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 20">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 21">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 22">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 23">
+        </div>
+        <div class="column">
+          <img src="https://image.tmdb.org/t/p/w500/gZZr3TIjlkrlga3F0hx1pDA7COi.jpg" alt="Filme 24">
+        </div>
+        <!-- Continue adicionando mais imagens conforme necessário -->
+      </div>
+      <button class="nav-button right">&gt;</button>
     </div>
   </div>
 </div>
+
+<script>
+  // Variáveis para controlar o scroll nas galerias
+  const galleries = document.querySelectorAll('.gallery');
+  const leftButtons = document.querySelectorAll('.nav-button.left');
+  const rightButtons = document.querySelectorAll('.nav-button.right');
+
+  galleries.forEach((gallery, index) => {
+    let scrollAmount = 0;
+    const scrollAmountIncrement = 300; // Quantidade de scroll a cada clique do botão
+
+    rightButtons[index].addEventListener('click', () => {
+      gallery.scrollBy({
+        left: scrollAmountIncrement,
+        behavior: 'smooth'
+      });
+    });
+
+    leftButtons[index].addEventListener('click', () => {
+      gallery.scrollBy({
+        left: -scrollAmountIncrement,
+        behavior: 'smooth'
+      });
+    });
+  });
+
+  // Função para adicionar animação de fade in ao título
+  document.addEventListener('DOMContentLoaded', () => {
+    const titleWrapper = document.querySelector('.title_wrapper');
+    setTimeout(() => {
+      titleWrapper.style.opacity = '1';
+    }, 1000);
+  });
+
+  // Função para mostrar alerta ao clicar no botão
+  document.querySelector('button').addEventListener('click', () => {
+    alert('Você clicou no botão "ASSISTA JÁ"!');
+  });
+
+  // Função para mostrar uma mensagem de boas-vindas ao carregar a página
+  window.addEventListener('load', () => {
+    console.log('Bem-vindo à nossa galeria de filmes e séries!');
+  });
+
+  // Adicionando mais funcionalidades para navegação entre galerias
+  function scrollToGallery(index) {
+    const targetGallery = galleries[index];
+    if (targetGallery) {
+      targetGallery.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  document.querySelectorAll('.nav-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const index = Array.from(button.parentElement.children).indexOf(button) / 2; // Calcula o índice da galeria correspondente
+      scrollToGallery(index);
+    });
+  });
+</script>
+
 </body>
 </html>

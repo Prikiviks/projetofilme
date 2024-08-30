@@ -12,11 +12,13 @@ from app.forms import (
 )
 
 from django.views import View
-
+from .models import Filme, Serie, Avaliacao, Categoria, Relatorio,Usuario
 
 # Remova ou comente esta linha
 # from app.views import IndexView  # ou qualquer outra view que você tenha
-
+def index(request):
+    filmes = Filme.objects.all()  # Ajuste a query conforme necessário
+    return render(request, 'index.html', {'filmes': filmes})
 
 
 class IndexView(View):
@@ -31,13 +33,6 @@ class IndexView(View):
             return redirect('success_url')  # Redireciona após o processamento
         # Se não houver dados, retorne uma resposta ou renderize novamente
         return render(request, 'index.html', {'error': 'Campo obrigatório.'})
-        
- 
-class AdminView(View):
-    def get(self, request):
-        return render(request, 'menu_admin.html')
-    def post(self, request):
-        True
         
 # VIEWS USUARIO
 class UsuarioListView(View):
